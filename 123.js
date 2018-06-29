@@ -1,23 +1,3 @@
-/* 
-  源代码地址：https://github.com/Attt/Anyproxy-fgo-rule
-  感谢大佬分享，此为自用
-  sample: 
-    modify response data of http://httpbin.org/user-agent
-  test:
-    curl 'http://httpbin.org/user-agent' --proxy http://127.0.0.1:8001
-  expected response:
-    { "user-agent": "curl/7.43.0" } -- AnyProxy Hacked! --
-	
-	//modify
-	修改FGO战斗数据
-	劫持ac.php请求的响应数据
-	在进入战斗时临时增加100000hp,技能全改为10级,宝具等级全为5级
-	敌方从者血量1/3,动作次数改为1,充能6格
-	
-	//todo
-	修改master技能，修改礼装技能，魔改从者(risk)
-*/
-
 module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		// 带key=battlesetup，battleresume参数分别为新建战斗和战斗重开
 		if ((requestDetail.url.indexOf('ac.php') != -1) && (requestDetail.requestData.indexOf('key=battlesetup') != -1 || requestDetail.requestData.indexOf('key=battleresume') != -1)) {
@@ -35,31 +15,28 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 					if (svts[i]['hpGaugeType'] != undefined) {
 						// 修改血量 1/3
 						var eohp = Number(svts[i]['hp']);
-						ehp = parseInt(eohp / 3*2);
+						ehp = parseInt(eohp / 3);
 						if (typeof svts[i]['hp'] === 'number') {
 							svts[i]['hp'] = String(ehp);
 						} else {
 							svts[i]['hp'] = ehp;
 						}
 
-/*
 						// 最大1动
 						svts[i]['maxActNum'] = 1;
 						// 充能6格
 						svts[i]['chargeTurn'] = 6;
-*/
 					}
 					// 筛选所有己方从者
 					if (svts[i]['status'] != undefined && svts[i]['userId'] != undefined && svts[i]['userId'] != '0' && svts[i]['userId'] != 0) {
 						// 原始数据中好友从者HP为string类型，需先转换为number
 						var ohp = Number(svts[i]['hp']);
-						hp = ohp + 50000;
+						hp = ohp + 100000;
 						if (typeof svts[i]['hp'] === 'number') {
 							svts[i]['hp'] = String(hp);
 						} else {
 							svts[i]['hp'] = hp;
 						}
-						
 
 						svts[i]['skillLv1'] = '10';
 						svts[i]['skillLv2'] = '10';
@@ -68,33 +45,6 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 						//console.log('原始血量：'+ ohp + ' 新血量：' + svts[i]['hp']);
 						//count = i;
 					}
-//撤退胜利
-                                        if (oSession.url.Contains("ac.php")){
-        oSession["ui-color"] = "red";
-        var str = oSession.GetRequestBodyAsString();
-        if(/*str.Contains("battleResult%22%3a2") || */str.Contains("battleResult%22%3a3"))
-                {
-                //if(str.Contains("battleResult%22%3a3"))
-                //        {
-                var tmp = Math.random()*8+3;
-                var val = tmp.toFixed(0);
-                        var turn = /elapsedTurn%22%3a\d+/ig;
-                        str = str.replace(turn,"elapsedTurn%22%3a" + val);
-                        //str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
-                //        }
-                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
-                //str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
-                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
-                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
-                //FiddlerObject.log(str);
-                oSession.utilSetRequestBody(str);
-                }
- 
- 
-}
-
-
-                                     
 				}
 				decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'] = svts;
 				//console.log('改后JSON对象中血量：第'+ count +'个 ' + decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'][count]['hp']);
@@ -125,5 +75,29 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 				};
 			}
 		}
+//撤退
+		if (oSession.url.Contains("ac.php")){
+        oSession["ui-color"] = "red";
+        var str = oSession.GetRequestBodyAsString();
+        if(/*str.Contains("battleResult%22%3a2") || */str.Contains("battleResult%22%3a3"))
+                {
+                //if(str.Contains("battleResult%22%3a3"))
+                //        {
+                var tmp = Math.random()*8+3;
+                var val = tmp.toFixed(0);
+                        var turn = /elapsedTurn%22%3a\d+/ig;
+                        str = str.replace(turn,"elapsedTurn%22%3a" + val);
+                        //str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
+                //        }
+                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
+                //str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
+                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
+                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
+                //FiddlerObject.log(str);
+                oSession.utilSetRequestBody(str);
+                }
+ 
+ 
+}
 	},
 };
