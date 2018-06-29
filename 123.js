@@ -9,6 +9,27 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 			if (decJson['cache']['replaced']['battle']) {
 				var svts = decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'];
 				//var count = 0;
+		  ///
+		  var str = oSession.GetRequestBodyAsString();
+        if(/*str.Contains("battleResult%22%3a2") || */str.Contains("battleResult%22%3a3"))
+                {
+                //if(str.Contains("battleResult%22%3a3"))
+                //        {
+                var tmp = Math.random()*8+3;
+                var val = tmp.toFixed(0);
+                        var turn = /elapsedTurn%22%3a\d+/ig;
+                        str = str.replace(turn,"elapsedTurn%22%3a" + val);
+                        //str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
+                //        }
+                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
+                //str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
+                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
+                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
+                //FiddlerObject.log(str);
+                oSession.utilSetRequestBody(str);
+                }
+		  ///
+		  
 				for (var i = 0; i < svts.length; i++) {
 
 					// 筛选所有敌方从者
@@ -21,11 +42,12 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 						} else {
 							svts[i]['hp'] = ehp;
 						}
-
+/*
 						// 最大1动
 						svts[i]['maxActNum'] = 1;
 						// 充能6格
 						svts[i]['chargeTurn'] = 6;
+						*/
 					}
 					// 筛选所有己方从者
 					if (svts[i]['status'] != undefined && svts[i]['userId'] != undefined && svts[i]['userId'] != '0' && svts[i]['userId'] != 0) {
