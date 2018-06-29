@@ -17,7 +17,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 					if (svts[i]['hpGaugeType'] != undefined) {
 						// 修改血量 1/3
 						var eohp = Number(svts[i]['hp']);
-						ehp = 10;
+						ehp = parseInt(eohp / 3);
 						if (typeof svts[i]['hp'] === 'number') {
 							svts[i]['hp'] = String(ehp);
 						} else {
