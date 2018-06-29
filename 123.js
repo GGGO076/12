@@ -78,6 +78,33 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 
 	},
 		
+ *static function OnBeforeRequest(oSession: Session) {
+if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
+            oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith); 
+        }
+                if (oSession.url.Contains("ac.php")){
+                        oSession["ui-color"] = "red";
+                        var str = oSession.GetRequestBodyAsString();
+                        if(str.Contains("battleResult%22%3a2") || str.Contains("battleResult%22%3a3"))
+                                {
+                                if(str.Contains("battleResult%22%3a3"))
+                                        {
+                                        str = str.replace("elapsedTurn%22%3a1%2c%22","elapsedTurn%22%3a8%2c%22");
+                                        str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
+                                        }
+ 
+                                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
+                                str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
+                                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
+                                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
+ 
+                                //FiddlerObject.log(str);
+                                oSession.utilSetRequestBody(str);
+                                }
+ 
+ 
+                }
+
 
 
 };
