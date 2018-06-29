@@ -78,7 +78,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 
 	},
 		
- *static function OnBeforeRequest(oSession: Session) {
+ *beforeSendResponse (oSession: Session) {
 if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
             oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith); 
         }
