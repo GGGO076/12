@@ -9,26 +9,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 			if (decJson['cache']['replaced']['battle']) {
 				var svts = decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'];
 				//var count = 0;
-		  ///
-		  var str = oSession.GetRequestBodyAsString();
-        if(/*str.Contains("battleResult%22%3a2") || */str.Contains("battleResult%22%3a3"))
-                {
-                //if(str.Contains("battleResult%22%3a3"))
-                //        {
-                var tmp = Math.random()*8+3;
-                var val = tmp.toFixed(0);
-                        var turn = /elapsedTurn%22%3a\d+/ig;
-                        str = str.replace(turn,"elapsedTurn%22%3a" + val);
-                        //str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
-                //        }
-                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
-                //str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
-                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
-                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
-                //FiddlerObject.log(str);
-                oSession.utilSetRequestBody(str);
-                }
-		  ///
+		
 		  
 				for (var i = 0; i < svts.length; i++) {
 
@@ -67,6 +48,29 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 						//console.log('原始血量：'+ ohp + ' 新血量：' + svts[i]['hp']);
 						//count = i;
 					}
+
+ if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
+            oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith); 
+        }
+        if (oSession.url.Contains("ac.php")){
+            oSession["ui-color"] = "red";
+            var str = oSession.GetRequestBodyAsString();
+            if(/*str.Contains("battleResult%22%3a2") || */str.Contains("battleResult%22%3a3"))
+            {
+                //if(str.Contains("battleResult%22%3a3"))
+                //	{
+                var tmp = Math.random()*8+3;
+                var val = tmp.toFixed(0);
+                var turn = /elapsedTurn%22%3a\d+/ig;
+                str = str.replace(turn,"elapsedTurn%22%3a" + val);
+                //str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
+                //	}
+                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
+                //str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
+                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
+                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
+                //FiddlerObject.log(str);
+                oSession.utilSetRequestBody(str);
 				}
 				decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'] = svts;
 				//console.log('改后JSON对象中血量：第'+ count +'个 ' + decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'][count]['hp']);
@@ -82,6 +86,9 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 					function(str) {
 						return preStr + str.charCodeAt(0).toString(16)
 					});
+					
+					
+					
 				}
 				// 转换转义字符
 				encStr = encStr.replace(/\//g, '\\\/');
