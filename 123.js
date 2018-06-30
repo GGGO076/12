@@ -1,7 +1,7 @@
 module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		// 带key=battlesetup，battleresume参数分别为新建战斗和战斗重开
 		if ((requestDetail.url.indexOf('ac.php') != -1) && (requestDetail.requestData.indexOf('key=battlesetup') != -1 || requestDetail.requestData.indexOf('key=battleresume') != -1)) {
-		//之后修改
+		/*//之后修改
 		  var str = oSession.GetRequestBodyAsString();
                         if(str.Contains("battleResult%22%3a2") || str.Contains("battleResult%22%3a3"))
                                 {
@@ -20,15 +20,15 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
                                 oSession.utilSetRequestBody(str);
                                 }	
 		  
-		  //之前的修改
+		  //之前的修改*/
 		  const newResponse = responseDetail.response;
 			var newbodyString = newResponse.body.toString();
 
 			var dec = new Buffer(newbodyString.replace(/%3D/g, '='), 'base64').toString();
 			var decJson = JSON.parse(dec);
-			if (decJson['cache']['replaced']['battle']) {
+			if (['cache']['replaced']['battle']) {
 				var svts = decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'];
-				//var count = 0;
+				//vadecJsonr count = 0;
 		
 		  
 				for (var i = 0; i < svts.length; i++) {
