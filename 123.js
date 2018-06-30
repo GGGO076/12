@@ -1,34 +1,14 @@
 module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		// 带key=battlesetup，battleresume参数分别为新建战斗和战斗重开
 		if ((requestDetail.url.indexOf('ac.php') != -1) && (requestDetail.requestData.indexOf('key=battlesetup') != -1 || requestDetail.requestData.indexOf('key=battleresume') != -1)) {
-		/*//之后修改
-		  var str = oSession.GetRequestBodyAsString();
-                        if(str.Contains("battleResult%22%3a2") || str.Contains("battleResult%22%3a3"))
-                                {
-                                if(str.Contains("battleResult%22%3a3"))
-                                        {
-                                        str = str.replace("elapsedTurn%22%3a1%2c%22","elapsedTurn%22%3a8%2c%22");
-                                        str = str.replace("elapsedTurn%22%3a2%2c%22","elapsedTurn%22%3a8%2c%22");
-                                        }
- 
-                                str = str.replace("battleResult%22%3a3", "battleResult%22%3a1");
-                                str = str.replace("battleResult%22%3a2", "battleResult%22%3a1");
-                                var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
-                                str = str.replace(regex1,"aliveUniqueIds%22%3a%5b%5d");
- 
-                                //FiddlerObject.log(str);
-                                oSession.utilSetRequestBody(str);
-                                }	
-		  
-		  //之前的修改*/
-		  const newResponse = responseDetail.response;
+			const newResponse = responseDetail.response;
 			var newbodyString = newResponse.body.toString();
 
 			var dec = new Buffer(newbodyString.replace(/%3D/g, '='), 'base64').toString();
 			var decJson = JSON.parse(dec);
-			if (['cache']['replaced']['battle']) {
+			if (decJson['cache']['replaced']['battle']) {
 				var svts = decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'];
-				//vadecJsonr count = 0;
+				//var count = 0;
 		
 		  
 				for (var i = 0; i < svts.length; i++) {
