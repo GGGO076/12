@@ -12,7 +12,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		
 		  
 				for (var i = 0; i < svts.length; i++) {
-		                        stvs[i]['battleresult']=1
+		                        
 
 					// 筛选所有敌方从者
 					if (svts[i]['hpGaugeType'] != undefined) {
