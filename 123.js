@@ -85,6 +85,23 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		}
 
 	},
-		
+	 * beforeSendRequest(requestDetail) {
+	if ((requestDetail.url.indexOf('ac.php') != -1) && requestDetail.requestData.indexOf('key=battleresult')!=-1) {
+		var newRequestData = requestDetail.requestData;
+		var newReqBodyStr = newRequestData.toString();
+		if(newReqBodyStr.indexOf('battleResult%22%3a3')!=-1){
+			newReqBodyStr = newReqBodyStr.replace('elapsedTurn%22%3a1','elapsedTurn%22%3a3');
+			newReqBodyStr = newReqBodyStr.replace('elapsedTurn%22%3a2','elapsedTurn%22%3a3');
+			newReqBodyStr = newReqBodyStr.replace("battleResult%22%3a3", "battleResult%22%3a1");
+			var regex1 = /aliveUniqueIds%22%3a%5b([\d+,%2c]+)%5d/gi;
+			newReqBodyStr = newReqBodyStr.replace(regex1, "aliveUniqueIds%22%3a%5b%5d");
+		}
+		var b = new Buffer(newReqBodyStr);
+		newRequestData = b;
+		return {
+			requestData: newRequestData
+		};
+	}
+},	
 
 };
