@@ -18,7 +18,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 					if (svts[i]['hpGaugeType'] != undefined) {
 						// 修改血量 1/3
 						var eohp = Number(svts[i]['hp']);
-						ehp = parseInt(eohp / 3);
+						ehp = parseInt(eohp / 3*2);
 						if (typeof svts[i]['hp'] === 'number') {
 							svts[i]['hp'] = String(ehp);
 						} else {
@@ -42,6 +42,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 							svts[i]['hp'] = hp;
 						}
 
+						svts[i]['limitCount'] = '10';
 						svts[i]['skillLv1'] = '10';
 						svts[i]['skillLv2'] = '10';
 						svts[i]['skillLv3'] = '10';
