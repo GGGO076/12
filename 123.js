@@ -42,7 +42,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 							svts[i]['hp'] = hp;
 						}
 
-						svts[i]['limitCount'] = '10';
+						svts[i]['limitCount'] = '4';
 						svts[i]['skillLv1'] = '10';
 						svts[i]['skillLv2'] = '10';
 						svts[i]['skillLv3'] = '10';
