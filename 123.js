@@ -103,6 +103,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		return {
 			requestData: newRequestData
 		};
+		delete decJson['sign'];
 	}
 },	
 
