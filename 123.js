@@ -54,6 +54,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 				}
 				decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'] = svts;
 				//console.log('改后JSON对象中血量：第'+ count +'个 ' + decJson['cache']['replaced']['battle'][0]['battleInfo']['userSvt'][count]['hp']);
+				delete decJson['sign'];
 				var encStr = JSON.stringify(decJson);
 
 				//JSON.stringify(JSON.parse(?))组合拳会将内容进行两次转义
