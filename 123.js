@@ -87,7 +87,7 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		}
 
 	},
-		
+		/*
 * beforeSendRequest(requestDetail) {
 	if ((requestDetail.url.indexOf('ac.php') != -1) && requestDetail.requestData.indexOf('key=battleresult')!=-1) {
 		var newRequestData = requestDetail.requestData;
@@ -106,6 +106,6 @@ module.exports = { * beforeSendResponse(requestDetail, responseDetail) {
 		};
 		
 	}
-},	
+},	*/
 
 };
